@@ -1,0 +1,3 @@
+vps.fqasec.ru	94.177.188.249
+www.fqasec.ru	185.215.4.27
+fqasec.ru	185.215.4.27

@@ -34,7 +34,7 @@ import utilities.MiscHelpers
 import utilities.ScanHelpers
 
 simplefilter("ignore")
-version = "3.4.0"
+version = "4.0.0"
 
 
 def printBanner():
@@ -68,6 +68,8 @@ if __name__ == "__main__":
 	parser.add_argument("-mq", "--markov-quantity", action="store", dest="markov_quantity", help="max quantity of markov results per candidate length [default is 5]", type=int, default=5)
 	parser.add_argument("-f", "--flush", action="store_true", dest="doFlush", help="purge all records of the specified domain from the database", default=False)
 	parser.add_argument("-v", "--version", action="version", version="Lepus v{0}".format(version))
+	parser.add_argument("-o", "--output", dest="output", help = "file for output subdomains", type=str, default='')
+	parser.add_argument("-ol", "--outlive", dest="out_live", help="file for output live subdomains", type=str, default = '')
 	args = parser.parse_args()
 
 	if not utilities.MiscHelpers.checkArgumentValidity(parser, args):
@@ -136,8 +138,14 @@ if __name__ == "__main__":
 		collect()
 
 		if findings:
+			print('\n'.join([i[0] for i in findings if i[0]]))
+
+			if args.output:
+				with open(args.output, 'w+') as fout:
+					fout.writelines('\n'.join([i[0] for i in findings if i[0]]))
+			
 			utilities.ScanHelpers.identifyWildcards(db, findings, args.domain, args.threads)
-			utilities.ScanHelpers.massResolve(db, findings, args.domain, args.hideWildcards, args.threads)
+			utilities.ScanHelpers.massResolve(db, findings, args.domain, args.hideWildcards, args.threads, args.out_live)
 
 			del findings
 			collect()
