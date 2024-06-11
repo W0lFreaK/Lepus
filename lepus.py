@@ -32,6 +32,11 @@ import submodules.Markov
 import utilities.DatabaseHelpers
 import utilities.MiscHelpers
 import utilities.ScanHelpers
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)+'/collectors')))
 
 simplefilter("ignore")
 version = "4.0.0"
